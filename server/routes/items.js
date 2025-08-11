@@ -114,4 +114,54 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
+// PUT /api/items/:id/rotation → update only the rotation
+router.put('/:id/rotation', async (req, res, next) => {
+  const { id } = req.params;
+  const { rotation } = req.body;
+  if (rotation == null) {
+    return res.status(400).json({ error: 'Must provide rotation.' });
+  }
+
+  try {
+    const { rows } = await pool.query(
+      `UPDATE items
+         SET rotation = $1
+       WHERE id = $2
+       RETURNING *`,
+      [rotation, id]
+    );
+    if (!rows.length) {
+      return res.status(404).json({ error: 'Item not found.' });
+    }
+    res.json(rows[0]);
+  } catch (err) {
+    next(err);
+  }
+});
+
+// PUT /api/items/:id/color → update only the color
+router.put('/:id/color', async (req, res, next) => {
+  const { id }    = req.params;
+  const { color } = req.body;
+  if (!color) {
+    return res.status(400).json({ error: 'Must provide color.' });
+  }
+  try {
+    const { rows } = await pool.query(
+      `UPDATE items
+         SET color = $1
+       WHERE id = $2
+       RETURNING *`,
+      [color, id]
+    );
+    if (!rows.length) {
+      return res.status(404).json({ error: 'Item not found.' });
+    }
+    res.json(rows[0]);
+  } catch (err) {
+    next(err);
+  }
+});
+
+
 module.exports = router;
