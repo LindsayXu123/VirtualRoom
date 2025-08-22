@@ -80,19 +80,32 @@ export default function RoomsList() {
   };
 
   const saveEditing = async () => {
-    if (editingId === null || !editingName.trim()) return;
-    setEditingLoading(true);
-    try {
-      await api.put(`/rooms/${editingId}`, { name: editingName });
-      setEditingId(null);
-      setEditingName('');
-      fetchRooms();
-    } catch (err: any) {
-      setError(err.message || 'Failed to update room name');
-    } finally {
-      setEditingLoading(false);
-    }
-  };
+  if (editingId === null) return;
+
+  const name = editingName.trim();
+  if (!name) { setError('Name cannot be empty'); return; }
+
+  setEditingLoading(true);
+  try {
+    const res = await api.patch(`/rooms/${editingId}`, { name, room_name: name, title: name });
+    const newName = res?.data?.name ?? name;
+    setRooms(prev => prev.map(r => (r.id === editingId ? { ...r, name: newName } : r)));
+    setEditingId(null);
+    setEditingName('');
+  } catch (err: any) {
+    const serverMsg =
+      err?.response?.data?.error ||
+      (typeof err?.response?.data === 'string' ? err.response.data : '') ||
+      err?.message ||
+      'Failed to rename room';
+    setError(serverMsg);
+    console.log('Rename error detail:', err?.response?.data || err);
+  } finally {
+    setEditingLoading(false);
+  }
+};
+
+
 
   if (loading) return <p className="p-4">Loading rooms…</p>;
   if (error)   return <p className="p-4 text-red-500">Error: {error}</p>;
@@ -173,7 +186,7 @@ export default function RoomsList() {
                         onClick={() => startEditing(room)}
                         className="px-2 py-1 border rounded hover:bg-gray-100"
                       >
-                        Edit
+                        Rename
                       </button>
                       <button
                         onClick={() => handleDelete(room.id)}

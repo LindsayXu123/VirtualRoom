@@ -80,6 +80,33 @@ router.put('/:id', async (req, res, next) => {
   }
 });
 
+// PATCH /api/rooms/:id — rename only
+router.patch('/:id', async (req, res) => {
+  try {
+    const id = Number(req.params.id);
+    const newName = (req.body?.name ?? req.body?.room_name ?? req.body?.title ?? '').trim();
+
+    if (!Number.isFinite(id)) return res.status(400).json({ error: 'Invalid id' });
+    if (!newName)            return res.status(400).json({ error: 'Name is required' });
+    if (newName.length > 100) return res.status(400).json({ error: 'Name too long (max 100)' });
+
+    // Your table has "name" (not "room_name"); skip updated_at
+    const { rows } = await pool.query(
+      `UPDATE rooms SET name = $1 WHERE id = $2 RETURNING id, name`,
+      [newName, id]
+    );
+
+    if (!rows[0]) return res.status(404).json({ error: 'Room not found' });
+    return res.json(rows[0]);
+  } catch (e) {
+    console.error('Rename room error:', e);
+    return res.status(500).json({ error: e?.message || 'Failed to rename room' });
+  }
+});
+
+
+
+
 // DELETE /api/rooms/:id → delete a room
 router.delete('/:id', async (req, res) => {
   const { userId } = req.auth;

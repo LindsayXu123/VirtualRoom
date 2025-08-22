@@ -8,6 +8,8 @@ const authRouter      = require('./routes/auth');
 const roomsRouter     = require('./routes/rooms');
 const itemsRouter     = require('./routes/items');
 const inventoryRouter = require('./routes/inventory');  // <-- new
+const openingsRouter = require('./routes/openings');
+const templatesRouter = require('./routes/templates');
 
 const app = express();
 app.use(cors());
@@ -28,6 +30,9 @@ app.use(
     path: ['/api/auth/signup', '/api/auth/login', '/ping'],
   })
 );
+
+app.use('/api', openingsRouter);
+app.use('/api/templates', templatesRouter);
 
 // 3. Protected API routes
 app.use('/api/inventory', inventoryRouter);  // <-- mount inventory

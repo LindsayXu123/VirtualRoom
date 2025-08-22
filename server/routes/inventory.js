@@ -4,7 +4,6 @@ const router  = express.Router();
 const pool    = require('../models/db');
 
 // GET /api/inventory
-// → list only this user’s inventory items
 router.get('/', async (req, res) => {
   const userId = req.auth.userId;
   try {
@@ -65,5 +64,7 @@ router.delete('/:id', async (req, res) => {
     res.status(500).json({ error: 'Could not delete inventory item.' });
   }
 });
+
+
 
 module.exports = router;
