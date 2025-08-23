@@ -1,3 +1,4 @@
+//OpeningsLayers.tsx
 import { Group, Line, Rect } from 'react-konva';
 import type { Opening } from '../types/openings';
 

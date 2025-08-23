@@ -1,4 +1,4 @@
-// client/src/api/openings.ts
+// client/src/types/openings.ts
 import api from '../api/api';
 
 export type Side = 'N'|'E'|'S'|'W';

@@ -1,3 +1,4 @@
+//openingUtils
 import type { Side } from './OpeningsLayer';
 
 export function nearestSide(x: number, y: number, roomW: number, roomH: number): Side {

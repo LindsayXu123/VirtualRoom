@@ -5,10 +5,11 @@ const { expressjwt: jwtMiddleware } = require('express-jwt');
 require('dotenv').config();
 
 const authRouter      = require('./routes/auth');
+const openingsRouter = require('./routes/openings');
+
 const roomsRouter     = require('./routes/rooms');
 const itemsRouter     = require('./routes/items');
 const inventoryRouter = require('./routes/inventory');  // <-- new
-const openingsRouter = require('./routes/openings');
 const templatesRouter = require('./routes/templates');
 
 const app = express();
