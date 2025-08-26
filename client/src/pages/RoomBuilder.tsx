@@ -679,28 +679,28 @@ export default function RoomBuilder() {
   };
 
   const handleInventoryEdit = async (
-  e: React.FormEvent<HTMLFormElement>,
-  inv: InventoryItem
-) => {
-  e.preventDefault();
-  const form = e.currentTarget;
-  const fd = new FormData(form);
-  const width = Number(fd.get('width'));
-  const height = Number(fd.get('height'));
-  const notes = String(fd.get('notes') ?? '');
+    e: React.FormEvent<HTMLFormElement>,
+    inv: InventoryItem
+  ) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const fd = new FormData(form);
+    const width = Number(fd.get('width'));
+    const height = Number(fd.get('height'));
+    const notes = String(fd.get('notes') ?? '');
 
-  try {
-    await api.put(`/inventory/${inv.id}`, { width, height, notes });
+    try {
+      await api.put(`/inventory/${inv.id}`, { width, height, notes });
 
-    setInventory(prev =>
-      prev.map(i => i.id === inv.id ? { ...i, width, height, notes } : i)
-    );
+      setInventory(prev =>
+        prev.map(i => i.id === inv.id ? { ...i, width, height, notes } : i)
+      );
 
-    form.closest('details')?.removeAttribute('open');
-  } catch (err) {
-    console.error('Edit inventory failed:', err);
-  }
-};
+      form.closest('details')?.removeAttribute('open');
+    } catch (err) {
+      console.error('Edit inventory failed:', err);
+    }
+  };
 
 
   if (loading) return <p className="p-4">Loading...</p>;
@@ -712,7 +712,7 @@ export default function RoomBuilder() {
       <div className="w-1/4 pr-4 flex flex-col min-h-0">
         {/* Room Template Form */}
         <form onSubmit={handleTemplateSubmit} className="mb-4 border p-3 rounded space-y-2">
-          <h3 className="font-semibold">Room Template</h3>
+          <h3 className="font-semibold">Floor Plan</h3>
           <div>
             <label className="mr-2">Shape:</label>
             <select
@@ -782,43 +782,42 @@ export default function RoomBuilder() {
           <button type="submit" className="bg-indigo-600 text-white px-4 py-2 rounded">
             Save
           </button>
-        </form>
+          <div className="mt-4 mb-2 flex items-center gap-3">
+            <span className="text-sm text-gray-600">Add:</span>
 
-        <div className="mt-4 mb-2 flex items-center gap-3">
-          <span className="text-sm text-gray-600">Add:</span>
-
-          {/* Door */}
-          <button
-            type="button"
-            onClick={() => handleToolClick('door')}
-            aria-pressed={tool === 'door'}
-            className={`px-3 py-1 rounded-full text-sm font-medium transition
+            {/* Door */}
+            <button
+              type="button"
+              onClick={() => handleToolClick('door')}
+              aria-pressed={tool === 'door'}
+              className={`px-3 py-1 rounded-full text-sm font-medium transition
       ${tool === 'door'
-                ? 'bg-blue-600 text-white shadow-sm'
-                : 'bg-gray-100 text-gray-900 hover:bg-gray-200'}`}
-          >
-            Door
-          </button>
+                  ? 'bg-blue-600 text-white shadow-sm'
+                  : 'bg-gray-100 text-gray-900 hover:bg-gray-200'}`}
+            >
+              Door
+            </button>
 
-          {/* Window */}
-          <button
-            type="button"
-            onClick={() => handleToolClick('window')}
-            aria-pressed={tool === 'window'}
-            className={`px-3 py-1 rounded-full text-sm font-medium transition
+            {/* Window */}
+            <button
+              type="button"
+              onClick={() => handleToolClick('window')}
+              aria-pressed={tool === 'window'}
+              className={`px-3 py-1 rounded-full text-sm font-medium transition
       ${tool === 'window'
-                ? 'bg-blue-600 text-white shadow-sm'
-                : 'bg-gray-100 text-gray-900 hover:bg-gray-200'}`}
-          >
-            Window
-          </button>
+                  ? 'bg-blue-600 text-white shadow-sm'
+                  : 'bg-gray-100 text-gray-900 hover:bg-gray-200'}`}
+            >
+              Window
+            </button>
 
-          <span className="ml-2 text-xs text-gray-500"></span>
-        </div>
+            <span className="ml-2 text-xs text-gray-500"></span>
+          </div>
+        </form>
 
         {/* Inventory Form */}
 
-        <h3 className="text-lg mb-2">Create Item</h3>
+        <h3 className="text-lg mb-2">Create Furniture</h3>
         <form onSubmit={createInventoryItem} className="mb-4 flex space-x-2 items-center">
           <div className="flex space-x-2">
             <input
@@ -925,7 +924,7 @@ export default function RoomBuilder() {
                         <div>
                           <span className="text-gray-500">Shape:</span> {inv.shape}
                         </div>
-                        
+
                       </div>
 
                       {inv.imageUrl && (
