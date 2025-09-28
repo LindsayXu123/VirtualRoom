@@ -253,7 +253,7 @@ function DimensionsOverlay({
 
   // format labels (distance is in template units; convert + round)
   const fmt = (d: number) => {
-    const v = d * unitsPerPixel; // convert if you later define real world scale
+    const v = d * unitsPerPixel;
     return Number.isInteger(v) ? `${v} ${unitLabel}` : `${v.toFixed(1)} ${unitLabel}`;
   };
 
@@ -345,7 +345,6 @@ function DimensionsOverlay({
             padding={4}
             fontSize={12}
             fill="#222"
-          // Keep label upright-ish: you can add rotation if you want to follow the line
           />
         </Label>
       </>
@@ -355,7 +354,7 @@ function DimensionsOverlay({
   const elements: React.ReactNode[] = [];
 
   if (polygon && polygon.length >= 3) {
-    // L-shape (or any polygon): draw dims for each outer wall segment
+    // L-shape
     const pts = polygon;
     for (let i = 0; i < pts.length; i++) {
       const a = pts[i];
@@ -1070,7 +1069,7 @@ export default function RoomBuilder() {
                     })()
                   ) : (
                     (() => {
-                      const len = 0.35; // 35% of opening span; tweak to taste
+                      const len = 0.35;
                       const [a1, a2, a3, a4] = doorFlapLinePoints(o.side, true, r, len);
                       const [b1, b2, b3, b4] = doorFlapLinePoints(o.side, false, r, len);
                       return (
@@ -1079,7 +1078,7 @@ export default function RoomBuilder() {
                           <Rect
                             x={r.x} y={r.y}
                             width={r.width} height={r.height}
-                            fill="rgba(14,165,233,0.18)"   // ~cyan
+                            fill="rgba(14,165,233,0.18)"
                             stroke="rgba(14,165,233,0.6)"
                             strokeWidth={1}
                           />
@@ -1152,7 +1151,6 @@ export default function RoomBuilder() {
                   <Ellipse
                     key={item.id}
                     {...common}
-                    // Ellipse is center-anchored; offset to keep your top-left semantics
                     x={x + W / 2}
                     y={y + H / 2}
                     radiusX={W / 2}
@@ -1163,7 +1161,6 @@ export default function RoomBuilder() {
                 );
               }
 
-              // TRIANGLE (upright, fits W×H box). We keep top-left semantics by using local points.
               if (shape === 'triangle') {
                 return (
                   <Line
