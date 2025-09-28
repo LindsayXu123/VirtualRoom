@@ -445,7 +445,7 @@ export default function RoomBuilder() {
         template.height,
         (template as any).cutWidth,
         (template as any).cutHeight,
-        'tl' // or whichever corner you use
+        'tl'
       )
       : null;
 
@@ -1202,7 +1202,7 @@ export default function RoomBuilder() {
           )}
           <DimensionsOverlay
             scale={scale}
-            visible={showDims}                    // your toggle
+            visible={showDims}                    
             rect={!isL ? { width: template.width, height: template.height } : null}
             polygon={isL ? poly : null}
             unitsPerPixel={1}
